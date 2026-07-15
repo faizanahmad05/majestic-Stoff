@@ -115,7 +115,7 @@
   /* Footer */
   footer{ background:var(--onyx); color:#EDE9DF; padding:60px 0 26px; }
   .footer-grid{ display:grid; grid-template-columns:1fr; gap:36px; }
-  @media(min-width:760px){ .footer-grid{ grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:24px; } }
+  @media(min-width:760px){ .footer-grid{ grid-template-columns:1.4fr 1fr 1.2fr; gap:24px; } }
   .footer-grid h4{ font-family:'Inter',sans-serif; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; font-weight:600; }
   .footer-grid ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; font-size:.88rem; color:#C9C5BA; }
   .footer-grid p{ color:#B9B4A7; font-size:.9rem; max-width:320px; }
@@ -240,80 +240,134 @@
 (function(){
 
 /* ---------- Data ---------- */
-var CATEGORIES = ['T-Shirts','Hoodies & Sweatshirts','Shirts','Bottoms','Outerwear'];
+var CATEGORIES = ['Shirts','Trousers','Combo Packs'];
 var SIZES = ['S','M','L','XL','XXL'];
 
 var PRODUCTS = [
-  { id:'p1', name:'Signature Crest Tee', category:'T-Shirts', price:3200,
-    sizes:['S','M','L','XL','XXL'], oos:['XXL'],
-    images:['https://picsum.photos/seed/ms-tee1/700/860','https://picsum.photos/seed/ms-tee1x/700/860'],
-    desc:'Heavyweight combed cotton tee with a tonal embroidered crest at the chest. Cut for a relaxed, elevated silhouette that layers cleanly under outerwear.',
-    fit:'Relaxed fit through the body with a slightly dropped shoulder. Model is 6\'1" (185cm) wearing size M.',
-    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
-    reviews:[
-      {name:'Bilal R.', rating:5, comment:'Fabric feels genuinely premium, fits true to size.', date:'2026-06-02'},
-      {name:'Hamza K.', rating:4, comment:'Great tee, wish it came in a couple more colours.', date:'2026-05-18'}
-    ]},
-  { id:'p2', name:'Heavyweight Pocket Tee', category:'T-Shirts', price:38,
+  /* ---------- Shirts ---------- */
+  { id:'p1', name:'Down Shoulder Premium Polo — Gray & Black', category:'Shirts', price:4500,
     sizes:['S','M','L','XL','XXL'], oos:[],
-    images:['https://picsum.photos/seed/ms-tee2/700/860','https://picsum.photos/seed/ms-tee2x/700/860'],
-    desc:'A 260gsm pocket tee built to hold its shape wash after wash. Boxy hem, ribbed collar, no fuss.',
-    fit:'True to size, straight fit. Size up for an oversized look.',
+    images:['/images/downshoulder-polo-gray-black-1.jpeg','/images/downshoulder-polo-gray-black-2.jpeg'],
+    desc:'A relaxed down-shoulder polo in a premium cotton-blend knit, finished in a sharp gray and black colourway. The dropped shoulder seam gives it a modern, easy silhouette while the ribbed collar keeps its shape all day.',
+    fit:'Relaxed fit with a dropped shoulder seam. True to size.',
     ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
     reviews:[]},
-  { id:'p3', name:'Onyx Embroidered Hoodie', category:'Hoodies & Sweatshirts', price:95,
-    sizes:['S','M','L','XL','XXL'], oos:['S'],
-    images:['https://picsum.photos/seed/ms-hoodie1/700/860','https://picsum.photos/seed/ms-hoodie1x/700/860'],
-    desc:'Brushed-fleece hoodie in a heavyweight cotton blend, finished with tonal embroidery across the chest. Built for cold-weather layering without the bulk.',
-    fit:'Relaxed fit, dropped shoulder. Model is 6\'0" (183cm) wearing size L.',
-    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
-    reviews:[
-      {name:'Ayaan S.', rating:5, comment:'Heavier than it looks in photos, exactly what I wanted for winter.', date:'2026-06-10'},
-      {name:'Zain M.', rating:5, comment:'Best hoodie I own. The embroidery detail is subtle and classy.', date:'2026-05-29'},
-      {name:'Omar F.', rating:4, comment:'Runs slightly large, otherwise excellent.', date:'2026-05-02'}
-    ]},
-  { id:'p4', name:'Crewneck Essential', category:'Hoodies & Sweatshirts', price:72,
+  { id:'p2', name:'Down Shoulder Premium Polo — Green & Black', category:'Shirts', price:4500,
     sizes:['S','M','L','XL','XXL'], oos:[],
-    images:['https://picsum.photos/seed/ms-crew1/700/860','https://picsum.photos/seed/ms-crew1x/700/860'],
-    desc:'A loopback cotton crewneck designed as the quiet foundation of a cold-weather wardrobe. Minimal branding, maximum wear.',
-    fit:'Regular fit through the chest and sleeve.',
+    images:['/images/downshoulder-polo-green-black-1.jpeg','/images/downshoulder-polo-green-black-2.jpeg'],
+    desc:'A relaxed down-shoulder polo in a premium cotton-blend knit, finished in a rich green and black colourway. The dropped shoulder seam gives it a modern, easy silhouette while the ribbed collar keeps its shape all day.',
+    fit:'Relaxed fit with a dropped shoulder seam. True to size.',
     ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
     reviews:[]},
-  { id:'p5', name:'Classic Oxford Shirt', category:'Shirts', price:68,
+  { id:'p3', name:'Down Shoulder Premium Polo — Silver Gray & White', category:'Shirts', price:4500,
     sizes:['S','M','L','XL','XXL'], oos:[],
-    images:['https://picsum.photos/seed/ms-oxford1/700/860','https://picsum.photos/seed/ms-oxford1x/700/860'],
-    desc:'A refined oxford weave shirt with a soft button-down collar. Sits between casual and formal — equally at home tucked in or worn open over a tee.',
-    fit:'Tailored fit through the waist. Model is 6\'1" (185cm) wearing size M.',
-    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
-    reviews:[
-      {name:'Fahad T.', rating:5, comment:'Sharp fit, the collar holds its shape all day.', date:'2026-06-14'}
-    ]},
-  { id:'p6', name:'Satin Collar Shirt', category:'Shirts', price:85,
-    sizes:['S','M','L','XL','XXL'], oos:['XL','XXL'],
-    images:['https://picsum.photos/seed/ms-satin1/700/860','https://picsum.photos/seed/ms-satin1x/700/860'],
-    desc:'An evening shirt with a subtle satin-finish collar and cuff. Understated shine for nights that call for a little more.',
-    fit:'Slim through the body. Model is 6\'0" (183cm) wearing size M.',
+    images:['/images/downshoulder-polo-silver-white-1.jpeg','/images/downshoulder-polo-silver-white-2.jpeg'],
+    desc:'A relaxed down-shoulder polo in a premium cotton-blend knit, finished in a clean silver gray and white colourway. The dropped shoulder seam gives it a modern, easy silhouette while the ribbed collar keeps its shape all day.',
+    fit:'Relaxed fit with a dropped shoulder seam. True to size.',
     ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
     reviews:[]},
-  { id:'p7', name:'Tailored Chino', category:'Bottoms', price:75,
+  { id:'p4', name:'Premium Textured Striped Shirt — Black & White', category:'Shirts', price:4800,
     sizes:['S','M','L','XL','XXL'], oos:[],
-    images:['https://picsum.photos/seed/ms-chino1/700/860','https://picsum.photos/seed/ms-chino1x/700/860'],
-    desc:'A tapered chino in brushed cotton twill with a clean front and hidden stretch waistband for all-day movement.',
-    fit:'Tapered leg, sits at the natural waist.',
+    images:['/images/striped-shirt-black-white-1.jpeg','/images/striped-shirt-black-white-2.jpeg'],
+    desc:'A textured woven shirt in a classic black-and-white stripe. The subtle fabric texture adds depth without shouting, making it equally sharp buttoned all the way up or worn open over a tee.',
+    fit:'Tailored fit through the body. True to size.',
     ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
-    reviews:[
-      {name:'Danish A.', rating:4, comment:'Great colour, true to size. My new everyday trouser.', date:'2026-04-22'}
-    ]},
-  { id:'p8', name:'Wool Blend Overcoat', category:'Outerwear', price:220,
-    sizes:['S','M','L','XL','XXL'], oos:['S','XXL'],
-    images:['https://picsum.photos/seed/ms-coat1/700/860','https://picsum.photos/seed/ms-coat1x/700/860'],
-    desc:'A structured wool-blend overcoat with a full canvas front and horn-effect buttons. The kind of coat that anchors everything worn beneath it.',
-    fit:'Tailored through the shoulder with room for a layer underneath. Model is 6\'1" (185cm) wearing size M.',
-    ship:'Dispatched within 2–3 business days. Delivered in 4–6 business days — cash collected at your door on arrival.',
-    reviews:[
-      {name:'Waqas I.', rating:5, comment:'Feels like a coat twice the price. Excellent drape.', date:'2026-06-05'},
-      {name:'Talha N.', rating:5, comment:'Stopped three people on the street asking where it was from.', date:'2026-05-11'}
-    ]}
+    reviews:[]},
+  { id:'p5', name:'Premium Textured Smooth Fabric Zip Polo — White', category:'Shirts', price:5200,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/zip-polo-white-1.jpeg','/images/zip-polo-white-2.jpeg'],
+    desc:'A smooth-textured zip polo with a half-zip placket for a cleaner, more modern take on the classic polo. Cut in crisp white for a sharp look that moves easily from day to evening.',
+    fit:'Tailored fit through the body. True to size.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p6', name:'Premium Textured Smooth Fabric Zip Polo — Olive Green', category:'Shirts', price:5200,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/zip-polo-olive-1.jpeg','/images/zip-polo-olive-2.jpeg'],
+    desc:'A smooth-textured zip polo with a half-zip placket for a cleaner, more modern take on the classic polo. Cut in an earthy olive green for a versatile, elevated everyday look.',
+    fit:'Tailored fit through the body. True to size.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p7', name:'Classic Beige Premium Collar Button Shirt', category:'Shirts', price:4200,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/collar-shirt-beige-1.jpeg','/images/collar-shirt-beige-2.jpeg'],
+    desc:'A classic button-down shirt in a premium beige fabric with a structured collar. Understated and versatile — dresses up or down with ease.',
+    fit:'Tailored fit through the waist. True to size.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p8', name:'Classic Blue Premium Collar Button Shirt', category:'Shirts', price:4200,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/collar-shirt-blue-1.jpeg','/images/collar-shirt-blue-2.jpeg'],
+    desc:'A classic button-down shirt in a premium blue fabric with a structured collar. Understated and versatile — dresses up or down with ease.',
+    fit:'Tailored fit through the waist. True to size.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+
+  /* ---------- Trousers ---------- */
+  { id:'p9', name:'Premium Beige Straight Fit Trouser', category:'Trousers', price:3800,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/trouser-beige-1.jpeg','/images/trouser-beige-2.jpeg'],
+    desc:'A straight fit trouser in a soft, elastic, and durable fabric with an adjustable drawstring waist. Exceptionally lightweight for all-day comfort.',
+    fit:'Straight fit through the leg, sits at the natural waist. True to size.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p10', name:'Premium Gray Straight Fit Trouser', category:'Trousers', price:3800,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/trouser-gray-1.jpeg','/images/trouser-gray-2.jpeg'],
+    desc:'A straight fit trouser in a soft, elastic, and durable fabric with an adjustable drawstring waist. Exceptionally lightweight for all-day comfort.',
+    fit:'Straight fit through the leg, sits at the natural waist. True to size.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p11', name:'Premium Camel Straight Fit Trouser', category:'Trousers', price:3800,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/trouser-camel-1.jpeg','/images/trouser-camel-2.jpeg'],
+    desc:'A straight fit trouser in a soft, elastic, and durable fabric with an adjustable drawstring waist. Exceptionally lightweight for all-day comfort.',
+    fit:'Straight fit through the leg, sits at the natural waist. True to size.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+
+  /* ---------- Combo Packs ---------- */
+  { id:'p12', name:'The Signature Combo', category:'Combo Packs', price:7999,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/combo-signature-1.jpeg','/images/combo-signature-2.jpeg'],
+    desc:'Our strongest combination: the Premium Textured Striped Shirt (Black & White) paired with the Premium Beige Straight Fit Trouser. A clean, premium, and timeless look that\u2019s perfect for summer.',
+    fit:'Shirt and trouser are cut in the same size as selected below.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p13', name:'The Luxe White Combo', category:'Combo Packs', price:8299,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/combo-luxe-white-1.jpeg','/images/combo-luxe-white-2.jpeg'],
+    desc:'One of the most luxurious pairings in the collection: the Premium Textured Smooth Fabric Zip Polo (White) with the Premium Camel Straight Fit Trouser. The white zip polo brings a modern edge, while the camel trouser adds warmth and elegance.',
+    fit:'Shirt and trouser are cut in the same size as selected below.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p14', name:'The Olive Elite', category:'Combo Packs', price:8299,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/combo-olive-elite-1.jpeg','/images/combo-olive-elite-2.jpeg'],
+    desc:'The Premium Textured Smooth Fabric Zip Polo (Olive Green) paired with the Premium Beige Straight Fit Trouser. A stylish, earthy-toned outfit that\u2019s trending in men\u2019s fashion right now — looks expensive, feels effortless, ideal for casual outings.',
+    fit:'Shirt and trouser are cut in the same size as selected below.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p15', name:'The Executive Blue', category:'Combo Packs', price:7499,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/combo-executive-blue-1.jpeg','/images/combo-executive-blue-2.jpeg'],
+    desc:'The Classic Blue Premium Collar Button Shirt paired with the Premium Gray Straight Fit Trouser. A smart-casual outfit suitable for work, dinners, and everyday wear — blue and gray is classic and versatile.',
+    fit:'Shirt and trouser are cut in the same size as selected below.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p16', name:'The Urban Green', category:'Combo Packs', price:7699,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/combo-urban-green-1.jpeg','/images/combo-urban-green-2.jpeg'],
+    desc:'The Down Shoulder Premium Polo (Green & Black) paired with the Premium Camel Straight Fit Trouser. A trendy, youthful combination that stands out while remaining easy to wear.',
+    fit:'Shirt and trouser are cut in the same size as selected below.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]},
+  { id:'p17', name:'The Modern Mono', category:'Combo Packs', price:7699,
+    sizes:['S','M','L','XL','XXL'], oos:[],
+    images:['/images/combo-modern-mono-1.jpeg','/images/combo-modern-mono-2.jpeg'],
+    desc:'The Down Shoulder Premium Polo (Gray & Black) paired with the Premium Classic Beige Straight Fit Trouser. A clean, monochrome-inspired outfit with a premium appearance — the beige trouser softens the dark polo for a balanced, stylish look.',
+    fit:'Shirt and trouser are cut in the same size as selected below.',
+    ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
+    reviews:[]}
 ];
 
 /* ---------- State ---------- */
@@ -332,7 +386,7 @@ var state = {
   reviewForm:{ name:'', rating:5, comment:'' }
 };
 
-var WHATSAPP_NUMBER = '03124051475'; // placeholder — replace with the real WhatsApp Business number
+var WHATSAPP_NUMBER = '10000000000'; // placeholder — replace with the real WhatsApp Business number
 
 /* ---------- Cart persistence (localStorage) ---------- */
 var CART_STORAGE_KEY = 'majesticStoffCart';
@@ -457,13 +511,9 @@ function footer(){
       '</div>' +
       '<div><h4>Shop</h4><ul>' +
         '<li><a data-action="go" data-view="shop">All Products</a></li>' +
-        '<li><a data-action="set-filter-category" data-value="Hoodies & Sweatshirts">Hoodies</a></li>' +
-        '<li><a data-action="set-filter-category" data-value="Outerwear">Outerwear</a></li>' +
-      '</ul></div>' +
-      '<div><h4>Support</h4><ul>' +
-        '<li><a data-action="account-click">Track an Order</a></li>' +
-        '<li><a data-action="account-click">Shipping & Returns</a></li>' +
-        '<li><a href="#" id="footerWaLink">WhatsApp Us</a></li>' +
+        '<li><a data-action="set-filter-category" data-value="Shirts">Shirts</a></li>' +
+        '<li><a data-action="set-filter-category" data-value="Trousers">Trousers</a></li>' +
+        '<li><a data-action="set-filter-category" data-value="Combo Packs">Combo Packs</a></li>' +
       '</ul></div>' +
       '<div><h4>Newsletter</h4>' +
         '<p style="max-width:none;">First look at new drops, no spam.</p>' +
@@ -480,7 +530,7 @@ function footer(){
 }
 
 function productCard(p){
-  var tag = p.oos.length >= p.sizes.length ? 'Sold Out' : p.category;
+  var tag = p.oos.length >= p.sizes.length ? 'Sold Out' : (p.badge || p.category);
   return '' +
   '<div class="card" data-action="open-product" data-id="'+p.id+'">' +
     '<div class="card-media"><span class="card-tag">'+escapeHtml(tag)+'</span><img src="'+p.images[0]+'" alt="'+escapeHtml(p.name)+'" loading="lazy"></div>' +
@@ -490,7 +540,9 @@ function productCard(p){
 
 /* ---------- Views ---------- */
 function viewHome(){
-  var featured = PRODUCTS.slice(0,6);
+  var shirts = PRODUCTS.filter(function(p){ return p.category==='Shirts'; });
+  var trousers = PRODUCTS.filter(function(p){ return p.category==='Trousers'; });
+  var combos = PRODUCTS.filter(function(p){ return p.category==='Combo Packs'; });
   var allReviews = [];
   PRODUCTS.forEach(function(p){ p.reviews.forEach(function(r){ allReviews.push(Object.assign({},r,{product:p.name})); }); });
   allReviews.sort(function(a,b){ return b.rating-a.rating || new Date(b.date)-new Date(a.date); });
@@ -498,7 +550,7 @@ function viewHome(){
 
   return '' +
   '<section class="hero">' +
-    '<div class="hero-bg"><img src="https://picsum.photos/seed/ms-hero/1600/1200" alt=""></div>' +
+    '<div class="hero-bg"><img src="/images/hero.jpeg" alt=""></div>' +
     '<div class="wrap hero-content">' +
       '<span class="eyebrow">Spring / Summer 2026</span>' +
       '<h1>Tailored for the streets you actually walk.</h1>' +
@@ -509,14 +561,28 @@ function viewHome(){
 
   '<section>' +
     '<div class="wrap">' +
-      '<div class="section-head"><span class="eyebrow">Curated</span><h2>Featured Collection</h2></div>' +
-      '<div class="grid grid-4">' + featured.map(productCard).join('') + '</div>' +
+      '<div class="section-head"><span class="eyebrow">Sharp & Considered</span><h2>Shirts</h2></div>' +
+      '<div class="grid">' + shirts.map(productCard).join('') + '</div>' +
+    '</div>' +
+  '</section>' +
+
+  '<section>' +
+    '<div class="wrap">' +
+      '<div class="section-head"><span class="eyebrow">Tailored Fit</span><h2>Trousers</h2></div>' +
+      '<div class="grid">' + trousers.map(productCard).join('') + '</div>' +
+    '</div>' +
+  '</section>' +
+
+  '<section>' +
+    '<div class="wrap">' +
+      '<div class="section-head"><span class="eyebrow">Best Value · Free Cap Included</span><h2>Combo Packs</h2></div>' +
+      '<div class="grid">' + combos.map(productCard).join('') + '</div>' +
     '</div>' +
   '</section>' +
 
   '<section class="ivory-section" id="about">' +
     '<div class="wrap story">' +
-      '<img src="https://picsum.photos/seed/ms-story/900/1100" alt="Majestic Stoff craftsmanship">' +
+      '<img src="/images/our-story.jpeg" alt="Majestic Stoff craftsmanship">' +
       '<div>' +
         '<span class="eyebrow">Our Story</span>' +
         '<blockquote style="margin-top:14px;">Clothes should earn their place in your wardrobe, not just your closet.</blockquote>' +
@@ -555,7 +621,7 @@ function viewShop(){
     '<div class="filter-group"><h4>Category</h4>' + pillList('category', [{label:'All',value:'all'}].concat(CATEGORIES.map(function(c){return {label:c,value:c};})), state.filters.category) + '</div>' +
     '<div class="filter-group"><h4>Size</h4>' + pillList('size', [{label:'All',value:'all'}].concat(SIZES.map(function(s){return {label:s,value:s};})), state.filters.size) + '</div>' +
     '<div class="filter-group"><h4>Price</h4>' + pillList('price', [
-      {label:'All Prices',value:'all'},{label:'Under $50',value:'under50'},{label:'$50–$100',value:'50to100'},{label:'Over $100',value:'over100'}
+      {label:'All Prices',value:'all'},{label:'Under Rs. 5,000',value:'under5000'},{label:'Rs. 5,000–10,000',value:'5to10k'},{label:'Over Rs. 10,000',value:'over10k'}
     ], state.filters.price) + '</div>';
   }
 
@@ -594,9 +660,9 @@ function getFilteredProducts(){
   var list = PRODUCTS.filter(function(p){
     if(f.category!=='all' && p.category!==f.category) return false;
     if(f.size!=='all' && p.sizes.indexOf(f.size)===-1) return false;
-    if(f.price==='under50' && p.price>=50) return false;
-    if(f.price==='50to100' && (p.price<50 || p.price>100)) return false;
-    if(f.price==='over100' && p.price<=100) return false;
+    if(f.price==='under5000' && p.price>=5000) return false;
+    if(f.price==='5to10k' && (p.price<5000 || p.price>10000)) return false;
+    if(f.price==='over10k' && p.price<=10000) return false;
     return true;
   });
   if(state.sort==='price-asc') list = list.slice().sort(function(a,b){return a.price-b.price;});
@@ -761,8 +827,6 @@ function render(){
   var wa = document.getElementById('waFloat');
   var waHref = 'https://wa.me/'+WHATSAPP_NUMBER+'?text=' + encodeURIComponent('Hi Majestic Stoff, I have a question');
   wa.setAttribute('href', waHref);
-  var footerWa = document.getElementById('footerWaLink');
-  if(footerWa) footerWa.setAttribute('href', waHref);
 }
 
 /* ---------- Event delegation ---------- */
