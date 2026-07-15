@@ -870,6 +870,24 @@ document.addEventListener('click', function(e){
       items: cartLines().map(function(l){ return {name:l.product.name, size:l.item.size, qty:l.item.qty, lineTotal:l.lineTotal}; }),
       total: cartSubtotal()
     };
+    fetch("https://script.google.com/macros/s/AKfycbwD8fMJx1I1tCXF-4pQHCqKUEADiFdYleb7ytNIUbBmR7ceofkici9PiJPAmvJ14Hg9/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    customerName: order.fullName,
+    phone: order.phone,
+    address: order.address,
+    city: order.city,
+    products: order.items,
+    total: order.total,
+    note: order.note
+  })
+})
+.then(res => res.json())
+.then(data => console.log("Order saved:", data))
+.catch(err => console.error("Google Sheets Error:", err));
     state.lastOrder = order;
     state.cart = [];
     state.checkoutForm = { fullName:'', phone:'', address:'', city:'', note:'' };
