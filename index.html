@@ -337,6 +337,31 @@ var state = {
 
 var WHATSAPP_NUMBER = '10000000000'; // placeholder — replace with the real WhatsApp Business number
 
+/* ---------- Order logging (Google Sheet via Apps Script Web App) ---------- */
+// Paste the Web App URL you get from Google Apps Script (Deploy → New deployment → Web app) below.
+var ORDER_SHEET_WEBHOOK = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+function logOrderToSheet(order){
+  if(!ORDER_SHEET_WEBHOOK || ORDER_SHEET_WEBHOOK.indexOf('PASTE_')===0) return; // not configured yet — skip silently
+  try{
+    fetch(ORDER_SHEET_WEBHOOK, {
+      method:'POST',
+      mode:'no-cors', // Apps Script web apps don't return readable CORS responses cross-origin; we don't need to read the response anyway
+      headers:{ 'Content-Type':'text/plain' }, // avoids a CORS preflight that Apps Script can't answer
+      body: JSON.stringify({
+        orderId: order.id,
+        fullName: order.fullName,
+        phone: order.phone,
+        address: order.address,
+        city: order.city,
+        note: order.note,
+        items: order.items.map(function(i){ return i.name+' ('+i.size+') x'+i.qty; }).join(', '),
+        total: order.total
+      })
+    });
+  }catch(e){ /* never block checkout if the sheet logging fails */ }
+}
+
 /* ---------- Cart persistence (localStorage) ---------- */
 var CART_STORAGE_KEY = 'majesticStoffCart';
 function loadCart(){
@@ -501,7 +526,7 @@ function viewHome(){
 
   return '' +
   '<section class="hero">' +
-    '<div class="hero-bg"><img src="images/hero.jpeg" alt=""></div>' +
+    '<div class="hero-bg"><img src="https://picsum.photos/seed/ms-hero/1600/1200" alt=""></div>' +
     '<div class="wrap hero-content">' +
       '<span class="eyebrow">Spring / Summer 2026</span>' +
       '<h1>Tailored for the streets you actually walk.</h1>' +
@@ -870,22 +895,8 @@ document.addEventListener('click', function(e){
       items: cartLines().map(function(l){ return {name:l.product.name, size:l.item.size, qty:l.item.qty, lineTotal:l.lineTotal}; }),
       total: cartSubtotal()
     };
-  fetch("https://script.google.com/macros/s/AKfycbwD8fMJx1I1tCXF-4pQHCqKUEADiFdYleb7ytNIUbBmR7ceofkici9PiJPAmvJ14Hg9/exec", {
-  method: "POST",
-  body: JSON.stringify({
-    customerName: order.fullName,
-    phone: order.phone,
-    address: order.address,
-    city: order.city,
-    products: order.items,
-    total: order.total,
-    note: order.note
-  })
-})
-.then(res => res.text())
-.then(data => console.log("Order saved:", data))
-.catch(err => console.error("Google Sheets Error:", err));
     state.lastOrder = order;
+    logOrderToSheet(order);
     state.cart = [];
     state.checkoutForm = { fullName:'', phone:'', address:'', city:'', note:'' };
     state.checkoutErrors = {};
