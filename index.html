@@ -329,38 +329,10 @@ var state = {
   sort:'newest',
   mobileFiltersOpen:false,
   mobileNavOpen:false,
-  reviewForm:{ name:'', rating:5, comment:'' },
-  checkoutForm:{ fullName:'', phone:'', address:'', city:'', note:'' },
-  checkoutErrors:{},
-  lastOrder:null
+  reviewForm:{ name:'', rating:5, comment:'' }
 };
 
 var WHATSAPP_NUMBER = '10000000000'; // placeholder — replace with the real WhatsApp Business number
-
-/* ---------- Order logging (Google Sheet via Apps Script Web App) ---------- */
-// Paste the Web App URL you get from Google Apps Script (Deploy → New deployment → Web app) below.
-var ORDER_SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwD8fMJx1I1tCXF-4pQHCqKUEADiFdYleb7ytNIUbBmR7ceofkici9PiJPAmvJ14Hg9/exec';
-
-function logOrderToSheet(order){
-  if(!ORDER_SHEET_WEBHOOK || ORDER_SHEET_WEBHOOK.indexOf('PASTE_')===0) return; // not configured yet — skip silently
-  try{
-    fetch(ORDER_SHEET_WEBHOOK, {
-      method:'POST',
-      mode:'no-cors', // Apps Script web apps don't return readable CORS responses cross-origin; we don't need to read the response anyway
-      headers:{ 'Content-Type':'text/plain' }, // avoids a CORS preflight that Apps Script can't answer
-      body: JSON.stringify({
-        orderId: order.id,
-        fullName: order.fullName,
-        phone: order.phone,
-        address: order.address,
-        city: order.city,
-        note: order.note,
-        items: order.items.map(function(i){ return i.name+' ('+i.size+') x'+i.qty; }).join(', '),
-        total: order.total
-      })
-    });
-  }catch(e){ /* never block checkout if the sheet logging fails */ }
-}
 
 /* ---------- Cart persistence (localStorage) ---------- */
 var CART_STORAGE_KEY = 'majesticStoffCart';
@@ -741,30 +713,24 @@ function viewCheckout(){
   if(!lines.length){
     return '<div class="wrap empty-state"><h1 class="font-display">Nothing to check out</h1><p style="color:var(--ink-soft);margin:14px 0 26px;">Your cart is empty.</p><button class="btn btn-gold" data-action="go" data-view="shop">Back to Shop</button></div>';
   }
-  var f = state.checkoutForm, e = state.checkoutErrors;
-  function field(id,label,key,type){
-    return '<div class="field'+(e[key]?' error':'')+'">' +
-      '<label>'+label+'</label>' +
-      '<input type="'+(type||'text')+'" data-role="'+key+'" value="'+escapeHtml(f[key])+'">' +
-      (e[key] ? '<div class="field-error">'+e[key]+'</div>' : '') +
-    '</div>';
-  }
+  var waMsg = 'Hi Majestic Stoff, I would like to place an order:%0A%0A' +
+    lines.map(function(l){
+      return '- '+l.product.name+' (Size '+l.item.size+') x'+l.item.qty+' — '+fmt(l.lineTotal);
+    }).join('%0A') +
+    '%0A%0ATotal: '+fmt(cartSubtotal());
+  var waHref = 'https://wa.me/'+WHATSAPP_NUMBER+'?text='+waMsg;
   return '' +
   '<div class="wrap page-head"><h1>Checkout</h1></div>' +
   '<div class="wrap checkout-layout" style="padding:26px 0 90px;">' +
     '<div>' +
-      field('fullName','Full Name','fullName') +
-      field('phone','Phone Number','phone','tel') +
-      field('address','Address','address') +
-      field('city','City / Area','city') +
-      '<div class="field"><label>Order Note (optional)</label><textarea rows="3" data-role="note">'+escapeHtml(f.note)+'</textarea></div>' +
+      '<p style="color:var(--ink-soft);margin-bottom:20px;">We take orders directly on WhatsApp. Tap the button below to send us your order — our team will confirm sizes, delivery charges, and payment with you right there.</p>' +
       '<div class="cod-note"><strong>Payment Method: Cash on Delivery.</strong> Payment is collected in cash at the time of delivery — no card or online payment needed now.</div>' +
       '<div class="trust-row">' +
         '<div class="trust-chip">'+ICONS.truck+' Cash on Delivery</div>' +
         '<div class="trust-chip">'+ICONS.swap+' Easy Exchange</div>' +
         '<div class="trust-chip">'+ICONS.shield+' Quality Checked</div>' +
       '</div>' +
-      '<button class="btn btn-gold btn-full" data-action="place-order">Place Order</button>' +
+      '<a class="btn btn-gold btn-full" style="margin-top:20px;" href="'+waHref+'" target="_blank" rel="noopener" data-action="order-whatsapp">Order via WhatsApp</a>' +
     '</div>' +
     '<div>' +
       '<div class="order-summary-box">' +
@@ -779,22 +745,6 @@ function viewCheckout(){
   '</div>';
 }
 
-function viewConfirmation(){
-  var o = state.lastOrder;
-  if(!o){
-    return '<div class="wrap empty-state"><h1 class="font-display">No recent order</h1><button class="btn btn-gold" data-action="go" data-view="shop">Go to Shop</button></div>';
-  }
-  return '' +
-  '<div class="wrap confirm-box">' +
-    '<div class="confirm-check">'+ICONS.check+'</div>' +
-    '<h1 class="font-display" style="font-size:1.8rem;">Thank you, '+escapeHtml(o.fullName.split(' ')[0]||'')+'.</h1>' +
-    '<p style="color:var(--ink-soft);margin:16px 0 8px;">Your order has been placed.</p>' +
-    '<p style="font-size:1.1rem;font-weight:600;margin-bottom:20px;">Order No. '+o.id+'</p>' +
-    '<p style="color:var(--ink-soft);margin-bottom:36px;">Our team will confirm your order by phone or WhatsApp before it\'s dispatched. Payment of '+fmt(o.total)+' will be collected in cash on delivery.</p>' +
-    '<button class="btn btn-outline" data-action="go" data-view="shop">Continue Shopping</button>' +
-  '</div>';
-}
-
 /* ---------- Main render ---------- */
 function render(){
   saveCart();
@@ -804,7 +754,7 @@ function render(){
   else if(state.view==='product') body = viewProduct();
   else if(state.view==='cart') body = viewCart();
   else if(state.view==='checkout') body = viewCheckout();
-  else if(state.view==='confirmation') body = viewConfirmation();
+
 
   document.getElementById('app').innerHTML = navbar() + '<main>' + body + '</main>' + footer();
 
@@ -881,26 +831,10 @@ document.addEventListener('click', function(e){
     render();
     toast('Removed from cart');
   }
-  else if(action==='place-order'){
-    var f = state.checkoutForm, errs = {};
-    if(!f.fullName.trim()) errs.fullName = 'Full name is required';
-    if(!f.phone.trim() || !/^[0-9+()\-\s]{7,20}$/.test(f.phone.trim())) errs.phone = 'Enter a valid phone number';
-    if(!f.address.trim()) errs.address = 'Address is required';
-    if(!f.city.trim()) errs.city = 'City / area is required';
-    state.checkoutErrors = errs;
-    if(Object.keys(errs).length){ render(); toast('Please fix the highlighted fields'); return; }
-    var order = {
-      id: 'MS-' + Math.floor(100000 + Math.random()*899999),
-      fullName: f.fullName.trim(), phone: f.phone.trim(), address: f.address.trim(), city: f.city.trim(), note: f.note.trim(),
-      items: cartLines().map(function(l){ return {name:l.product.name, size:l.item.size, qty:l.item.qty, lineTotal:l.lineTotal}; }),
-      total: cartSubtotal()
-    };
-    state.lastOrder = order;
-    logOrderToSheet(order);
+  else if(action==='order-whatsapp'){
     state.cart = [];
-    state.checkoutForm = { fullName:'', phone:'', address:'', city:'', note:'' };
-    state.checkoutErrors = {};
-    navigate('confirmation');
+    render();
+    toast('Opening WhatsApp to confirm your order...');
   }
 });
 
@@ -910,11 +844,6 @@ document.addEventListener('input', function(e){
   if(!role) return;
   if(role==='review-name') state.reviewForm.name = t.value;
   else if(role==='review-comment') state.reviewForm.comment = t.value;
-  else if(role==='fullName') state.checkoutForm.fullName = t.value;
-  else if(role==='phone') state.checkoutForm.phone = t.value;
-  else if(role==='address') state.checkoutForm.address = t.value;
-  else if(role==='city') state.checkoutForm.city = t.value;
-  else if(role==='note') state.checkoutForm.note = t.value;
 });
 
 document.addEventListener('change', function(e){
