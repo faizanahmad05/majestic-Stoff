@@ -248,7 +248,7 @@ var PRODUCTS = [
   /* ---------- Shirts ---------- */
   { id:'p1', name:'Down Shoulder Premium Polo — Gray & Black', category:'Shirts', price:2800,
     sizes:['S','M','L','XL','XXL'], oos:[],
-    images:['/images/downshoulder-polo-gray-black-1 (2).png','/images/downshoulder-polo-gray-black-2.jpeg'],
+    images:['/images/downshoulder-polo-gray-black-1.png','/images/downshoulder-polo-gray-black-2.jpeg'],
     desc:'A relaxed down-shoulder polo in a premium cotton-blend knit, finished in a sharp gray and black colourway. The dropped shoulder seam gives it a modern, easy silhouette while the ribbed collar keeps its shape all day.',
     fit:'Relaxed fit with a dropped shoulder seam. True to size.',
     ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
@@ -262,7 +262,7 @@ var PRODUCTS = [
     reviews:[]},
   { id:'p3', name:'Down Shoulder Premium Polo — Silver Gray & White', category:'Shirts', price:2800,
     sizes:['S','M','L','XL','XXL'], oos:[],
-    images:['/images/downshoulder-polo-silver-white-1 (2).png','/images/downshoulder-polo-silver-white-2.jpeg'],
+    images:['/images/downshoulder-polo-silver-white-1.png','/images/downshoulder-polo-silver-white-2.jpeg'],
     desc:'A relaxed down-shoulder polo in a premium cotton-blend knit, finished in a clean silver gray and white colourway. The dropped shoulder seam gives it a modern, easy silhouette while the ribbed collar keeps its shape all day.',
     fit:'Relaxed fit with a dropped shoulder seam. True to size.',
     ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
@@ -362,10 +362,10 @@ var PRODUCTS = [
     fit:'Shirt and trouser are cut in the same size as selected below.',
     ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
     reviews:[]},
-  { id:'p17', name:'Build Your Own Combo', category:'Combo Packs', price:"Custom",
+  { id:'p17', name:'Build Your Own Combo', category:'Combo Packs', price:6999, badge:'Pick & Mix',
     sizes:['S','M','L','XL','XXL'], oos:[],
-    images:['/images/combo-modern-mono-1.png','/images/combo-modern-mono-2.jpeg'],
-    desc:'Can't decide on a set pairing? Build your own combo — choose any shirt from our shirt collection and any trouser from our trouser collection, in whatever colours and sizes you like. Once you have picked your two pieces, just message us your selection and sizes on WhatsApp and we will bundle them together at our special combo price.',
+    images:['/images/combo-build-your-own-1.png','/images/combo-build-your-own-2.jpeg'],
+    desc:'Can\u2019t decide on a set pairing? Build your own combo \u2014 choose any shirt from our shirt collection and any trouser from our trouser collection, in whatever colours and sizes you like. Once you\u2019ve picked your two pieces, just message us your selection and sizes on WhatsApp and we\u2019ll bundle them together at our special combo price.',
     fit:'Shirt and trouser are cut in the same size as selected below.',
     ship:'Dispatched within 1–2 business days. Delivered in 3–5 business days — cash collected at your door on arrival.',
     reviews:[]}
@@ -387,7 +387,7 @@ var state = {
   reviewForm:{ name:'', rating:5, comment:'' }
 };
 
-var WHATSAPP_NUMBER = '03124051475'; // placeholder — replace with the real WhatsApp Business number
+var WHATSAPP_NUMBER = '923124051475'; // Pakistan country code + number, no leading zero/plus
 
 /* ---------- Cart persistence (localStorage) ---------- */
 var CART_STORAGE_KEY = 'majesticStoffCart';
@@ -551,7 +551,7 @@ function viewHome(){
 
   return '' +
   '<section class="hero">' +
-    '<div class="hero-bg"><img src="/images/combo-signature-1.png" alt=""></div>' +
+    '<div class="hero-bg"><img src="/images/hero.jpg" alt=""></div>' +
     '<div class="wrap hero-content">' +
       '<span class="eyebrow">Spring / Summer 2026</span>' +
       '<h1>Tailored for the streets you actually walk.</h1>' +
@@ -576,18 +576,18 @@ function viewHome(){
 
   '<section>' +
     '<div class="wrap">' +
-      '<div class="section-head"><span class="eyebrow">Best Value · Free Cap Included</span><h2>Combo Packs</h2></div>' +
+      '<div class="section-head"><span class="eyebrow">Best Value</span><h2>Combo Packs</h2></div>' +
       '<div class="grid">' + combos.map(productCard).join('') + '</div>' +
     '</div>' +
   '</section>' +
 
   '<section class="ivory-section" id="about">' +
     '<div class="wrap story">' +
-      '<img src="/images/our-story.jpeg" alt="Majestic Stoff craftsmanship">' +
+      '<img src="/images/our-story.jpg" alt="Majestic Stoff craftsmanship">' +
       '<div>' +
         '<span class="eyebrow">Our Story</span>' +
         '<blockquote style="margin-top:14px;">Clothes should earn their place in your wardrobe, not just your closet.</blockquote>' +
-        '<p style="color:var(--ink-soft);">Majestic Stoff was built for young men who take their style seriously without taking themselves too seriously. Every piece is developed for fit first, then fabric, then finish — the order that actually shows up when you wear it. We ship anywhere, and you only pay when it\'s in your hands.</p>' +
+        '<p style="color:var(--ink-soft);">Majestic Stoff was built for young men who take their style seriously without taking themselves too seriously. Every piece is developed for fit first, then fabric, then finish — the order that actually shows up when you wear it. We ship anywhere, and you only pay when it\u2019s in your hands.</p>' +
       '</div>' +
     '</div>' +
   '</section>' +
